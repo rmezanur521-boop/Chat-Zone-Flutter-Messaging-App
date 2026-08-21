@@ -9,8 +9,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> checkAuthStatus() async {
     state = state.copyWith(status: AuthStatus.loading);
-    final user = await _repository.getCurrentUser();
-    state = state.copyWith(status: AuthStatus.authenticated, user: user);
+    try {
+      final user = await _repository.getCurrentUser();
+      state = state.copyWith(status: AuthStatus.authenticated, user: user);
+    } catch (_) {
+      state = state.copyWith(status: AuthStatus.unauthenticated);
+    }
   }
 
   Future<bool> login(String email, String password) async {

@@ -1,7 +1,10 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = 'https://192.168.88.5:7001';
+  static const String baseUrl =
+      kIsWeb ? 'http://localhost:5243' : 'http://10.0.2.2:5243';
   static const String apiUrl = '$baseUrl/api';
   static const String hubUrl = '$baseUrl/chatHub';
 

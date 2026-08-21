@@ -135,9 +135,9 @@
     },
     {
       "name": "flutter_cache_manager",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_cache_manager-3.4.1",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_cache_manager-3.4.2",
       "packageUri": "lib/",
-      "languageVersion": "3.0"
+      "languageVersion": "3.8"
     },
     {
       "name": "flutter_lints",
@@ -291,13 +291,19 @@
     },
     {
       "name": "jni",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/jni-1.0.0",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/jni-1.0.3",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
     {
       "name": "jni_flutter",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/jni_flutter-1.0.1",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/jni_flutter-1.0.2",
+      "packageUri": "lib/",
+      "languageVersion": "3.3"
+    },
+    {
+      "name": "jni_util",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/jni_util-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.3"
     },
@@ -369,7 +375,7 @@
     },
     {
       "name": "objective_c",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/objective_c-9.4.1",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/objective_c-9.5.0",
       "packageUri": "lib/",
       "languageVersion": "3.10"
     },
@@ -381,9 +387,9 @@
     },
     {
       "name": "package_config",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/package_config-2.2.0",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/package_config-3.0.0",
       "packageUri": "lib/",
-      "languageVersion": "3.4"
+      "languageVersion": "3.11"
     },
     {
       "name": "path",
@@ -603,7 +609,7 @@
     },
     {
       "name": "synchronized",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/synchronized-3.4.1",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/synchronized-3.4.1+2",
       "packageUri": "lib/",
       "languageVersion": "3.12"
     },
@@ -651,7 +657,7 @@
     },
     {
       "name": "vm_service",
-      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-15.2.0",
+      "rootUri": "file:///C:/Users/Mezan/AppData/Local/Pub/Cache/hosted/pub.dev/vm_service-15.3.0",
       "packageUri": "lib/",
       "languageVersion": "3.5"
     },

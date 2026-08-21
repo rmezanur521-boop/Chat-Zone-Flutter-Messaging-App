@@ -90,8 +90,9 @@ class ApiClient {
 
   Future<Map<String, dynamic>> get(String url, {bool withAuth = true}) {
     return _withAuthRetry(
-      () async => _client.get(Uri.parse(url),
-          headers: await _headers(withAuth: withAuth)),
+      () async => _client
+          .get(Uri.parse(url), headers: await _headers(withAuth: withAuth))
+          .timeout(const Duration(seconds: 10)),
       withAuth: withAuth,
     );
   }
