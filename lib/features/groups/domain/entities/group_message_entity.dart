@@ -8,6 +8,8 @@ class GroupMessageEntity extends Equatable {
   final String? senderAvatar;
   final String content;
   final DateTime sentAt;
+  final DateTime? editedAt;
+  final bool isDeleted;
   final bool isEdited;
 
   const GroupMessageEntity({
@@ -18,8 +20,9 @@ class GroupMessageEntity extends Equatable {
     this.senderAvatar,
     required this.content,
     required this.sentAt,
-    this.isEdited = false,
-  });
+    this.editedAt,
+    this.isDeleted = false,
+  }) : isEdited = editedAt != null;
 
   @override
   List<Object?> get props => [
@@ -30,6 +33,7 @@ class GroupMessageEntity extends Equatable {
         senderAvatar,
         content,
         sentAt,
-        isEdited
+        editedAt,
+        isDeleted,
       ];
 }

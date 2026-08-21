@@ -26,10 +26,21 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<ProfileEntity> updateProfile(
-      {required String userName, String? bio}) async {
+  Future<ProfileEntity> updateProfile({
+    required String firstName,
+    required String lastName,
+    String? bio,
+    String? gender,
+    DateTime? dateOfBirth,
+  }) async {
     try {
-      return await _remote.updateProfile(userName: userName, bio: bio);
+      return await _remote.updateProfile(
+        firstName: firstName,
+        lastName: lastName,
+        bio: bio,
+        gender: gender,
+        dateOfBirth: dateOfBirth,
+      );
     } catch (e) {
       throw mapExceptionToFailure(e);
     }

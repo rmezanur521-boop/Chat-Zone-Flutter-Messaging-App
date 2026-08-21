@@ -5,16 +5,18 @@ import '../storage/secure_storage_service.dart';
 
 /// Central HTTP client. Every datasource in the app should call
 /// through this class instead of using http.* directly, so that
-/// auth headers and error handling stay consistent everywhere.
+/// auth headers, token refresh, and error handling stay consistent.
 class ApiClient {
   final http.Client _client;
   final SecureStorageService _secureStorage;
   final Future<void> Function()? onUnauthorized;
+  final Future<bool> Function()? onTokenExpired;
 
   ApiClient({
     http.Client? client,
     required SecureStorageService secureStorage,
     this.onUnauthorized,
+    this.onTokenExpired,
   })  : _client = client ?? http.Client(),
         _secureStorage = secureStorage;
 
@@ -40,7 +42,6 @@ class ApiClient {
     final message = body['message'] as String? ?? 'Something went wrong.';
     switch (statusCode) {
       case 401:
-        onUnauthorized?.call();
         throw UnauthorizedException(message);
       case 403:
         throw ForbiddenException(message);
@@ -60,59 +61,77 @@ class ApiClient {
     _throwForStatus(response.statusCode, decoded);
   }
 
-  Future<Map<String, dynamic>> get(String url, {bool withAuth = true}) async {
+  /// Runs [request] once. On a 401 (and only for authenticated calls),
+  /// tries a single silent token refresh and retries the request once.
+  /// If refresh isn't possible or fails, the session is cleared.
+  Future<Map<String, dynamic>> _withAuthRetry(
+    Future<http.Response> Function() request, {
+    required bool withAuth,
+  }) async {
     try {
-      final response = await _client.get(Uri.parse(url),
-          headers: await _headers(withAuth: withAuth));
-      return _handle(response);
+      final response = await request();
+      return await _handle(response);
+    } on UnauthorizedException {
+      if (!withAuth || onTokenExpired == null) {
+        await onUnauthorized?.call();
+        rethrow;
+      }
+      final refreshed = await onTokenExpired!();
+      if (!refreshed) {
+        await onUnauthorized?.call();
+        rethrow;
+      }
+      final retryResponse = await request();
+      return await _handle(retryResponse);
     } on http.ClientException {
       throw NoInternetException();
     }
+  }
+
+  Future<Map<String, dynamic>> get(String url, {bool withAuth = true}) {
+    return _withAuthRetry(
+      () async => _client.get(Uri.parse(url),
+          headers: await _headers(withAuth: withAuth)),
+      withAuth: withAuth,
+    );
   }
 
   Future<Map<String, dynamic>> post(
     String url, {
     Map<String, dynamic>? body,
     bool withAuth = true,
-  }) async {
-    try {
-      final response = await _client.post(
+  }) {
+    return _withAuthRetry(
+      () async => _client.post(
         Uri.parse(url),
         headers: await _headers(withAuth: withAuth),
         body: body != null ? jsonEncode(body) : null,
-      );
-      return _handle(response);
-    } on http.ClientException {
-      throw NoInternetException();
-    }
+      ),
+      withAuth: withAuth,
+    );
   }
 
   Future<Map<String, dynamic>> put(
     String url, {
     Map<String, dynamic>? body,
     bool withAuth = true,
-  }) async {
-    try {
-      final response = await _client.put(
+  }) {
+    return _withAuthRetry(
+      () async => _client.put(
         Uri.parse(url),
         headers: await _headers(withAuth: withAuth),
         body: body != null ? jsonEncode(body) : null,
-      );
-      return _handle(response);
-    } on http.ClientException {
-      throw NoInternetException();
-    }
+      ),
+      withAuth: withAuth,
+    );
   }
 
-  Future<Map<String, dynamic>> delete(String url,
-      {bool withAuth = true}) async {
-    try {
-      final response = await _client.delete(Uri.parse(url),
-          headers: await _headers(withAuth: withAuth));
-      return _handle(response);
-    } on http.ClientException {
-      throw NoInternetException();
-    }
+  Future<Map<String, dynamic>> delete(String url, {bool withAuth = true}) {
+    return _withAuthRetry(
+      () async => _client.delete(Uri.parse(url),
+          headers: await _headers(withAuth: withAuth)),
+      withAuth: withAuth,
+    );
   }
 
   /// Multipart upload — used for profile picture upload.

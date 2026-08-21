@@ -16,6 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _remote.login(email, password);
       await _secureStorage.saveSession(
         token: response.token,
+        refreshToken: response.refreshToken,
         userId: response.user.id,
         userName: response.user.userName,
         email: response.user.email,
@@ -30,10 +31,15 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<UserEntity> register(
       String userName, String email, String password) async {
     try {
-      await _remote.register(userName, email, password);
-      // Register endpoint doesn't return a token per the docs,
-      // so we log in right after a successful signup.
-      return await login(email, password);
+      final response = await _remote.register(userName, email, password);
+      await _secureStorage.saveSession(
+        token: response.token,
+        refreshToken: response.refreshToken,
+        userId: response.user.id,
+        userName: response.user.userName,
+        email: response.user.email,
+      );
+      return response.user;
     } catch (e) {
       throw mapExceptionToFailure(e);
     }
@@ -53,6 +59,15 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
+    final refreshToken = await _secureStorage.getRefreshToken();
+    if (refreshToken != null && refreshToken.isNotEmpty) {
+      try {
+        await _remote.logout(refreshToken);
+      } catch (_) {
+        // Server call failed (offline, already revoked, etc.) — local
+        // session is cleared below regardless so the user can still log out.
+      }
+    }
     await _secureStorage.clearSession();
   }
 }

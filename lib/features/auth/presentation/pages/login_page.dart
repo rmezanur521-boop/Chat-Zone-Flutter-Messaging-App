@@ -40,7 +40,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
       context.go(AppRoutes.home);
     } else {
       final error = ref.read(authNotifierProvider).errorMessage;
-      AppSnackBar.error(context, 'Login failed');
+      AppSnackBar.error(context, error ?? 'Login failed');
     }
   }
 

@@ -5,19 +5,27 @@ class ProfileModel extends ProfileEntity {
     required super.id,
     required super.userName,
     required super.email,
+    required super.firstName,
+    required super.lastName,
     super.bio,
+    super.gender,
+    super.dateOfBirth,
     super.avatarUrl,
   });
 
-  // ⚠️ Verify these keys against the actual /api/profile response.
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
     return ProfileModel(
-      id: (json['userId'] ?? json['id'] ?? '').toString(),
+      id: (json['id'] ?? '').toString(),
       userName: json['userName']?.toString() ?? '',
       email: json['email']?.toString() ?? '',
+      firstName: json['firstName']?.toString() ?? '',
+      lastName: json['lastName']?.toString() ?? '',
       bio: json['bio']?.toString(),
-      avatarUrl: json['profilePictureUrl']?.toString() ??
-          json['avatarUrl']?.toString(),
+      gender: json['gender']?.toString(),
+      dateOfBirth: json['dateOfBirth'] != null
+          ? DateTime.tryParse(json['dateOfBirth'].toString())
+          : null,
+      avatarUrl: json['profilePicture']?.toString(),
     );
   }
 }

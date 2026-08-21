@@ -11,7 +11,6 @@ class ConversationPreviewModel extends ConversationPreviewEntity {
     super.isOnline,
   });
 
-  // ⚠️ Verify these keys against the actual /api/messages/previews response.
   factory ConversationPreviewModel.fromJson(Map<String, dynamic> json) {
     return ConversationPreviewModel(
       userId: (json['userId'] ?? json['id'] ?? '').toString(),

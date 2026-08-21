@@ -26,11 +26,9 @@ class ChatNotifier extends StateNotifier<ChatState> {
 
   void _listenIncoming() {
     _subscription = _socket.incomingMessages.listen((message) {
-      final belongsToThisChat = (message.senderId == otherUserId &&
-              message.receiverId == currentUserId) ||
-          (message.senderId == currentUserId &&
-              message.receiverId == otherUserId);
-      if (belongsToThisChat) {
+      final isFromOtherParty = message.senderId == otherUserId;
+      final alreadyPresent = state.messages.any((m) => m.id == message.id);
+      if (isFromOtherParty && !alreadyPresent) {
         state = state.copyWith(messages: [...state.messages, message]);
       }
     });

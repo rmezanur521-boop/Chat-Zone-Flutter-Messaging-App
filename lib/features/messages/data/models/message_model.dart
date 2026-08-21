@@ -4,25 +4,25 @@ class MessageModel extends MessageEntity {
   const MessageModel({
     required super.id,
     required super.senderId,
-    required super.receiverId,
+    required super.senderName,
     required super.content,
     required super.sentAt,
-    super.isEdited,
+    super.editedAt,
+    super.isDeleted,
   });
 
-  // ⚠️ Verify these keys against the actual backend JSON (Swagger)
-  // and adjust if field names differ.
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
-      id: (json['id'] ?? json['messageId'] ?? '').toString(),
+      id: (json['id'] ?? '').toString(),
       senderId: (json['senderId'] ?? '').toString(),
-      receiverId: (json['receiverId'] ?? '').toString(),
+      senderName: json['senderName']?.toString() ?? '',
       content: json['content']?.toString() ?? '',
-      sentAt: DateTime.tryParse(json['sentAt']?.toString() ??
-              json['createdAt']?.toString() ??
-              '') ??
-          DateTime.now(),
-      isEdited: json['isEdited'] == true,
+      sentAt:
+          DateTime.tryParse(json['sentAt']?.toString() ?? '') ?? DateTime.now(),
+      editedAt: json['editedAt'] != null
+          ? DateTime.tryParse(json['editedAt'].toString())
+          : null,
+      isDeleted: json['isDeleted'] == true,
     );
   }
 }

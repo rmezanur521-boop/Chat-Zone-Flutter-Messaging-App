@@ -1,9 +1,6 @@
 class ApiConstants {
   ApiConstants._();
 
-  // ⚠️ Change this to your deployed backend URL for production.
-  // For Android Emulator use: https://10.0.2.2:7001
-  // For iOS Simulator / physical device on same network, use your machine's IP.
   static const String baseUrl = 'https://192.168.88.5:7001';
   static const String apiUrl = '$baseUrl/api';
   static const String hubUrl = '$baseUrl/chatHub';
@@ -12,7 +9,8 @@ class ApiConstants {
   static const String login = '$apiUrl/auth/login';
   static const String register = '$apiUrl/auth/register';
   static const String me = '$apiUrl/auth/me';
-
+  static const String refreshToken = '$apiUrl/auth/refresh-token';
+  static const String logout = '$apiUrl/auth/logout';
   // Messages
   static const String messagePreviews = '$apiUrl/messages/previews';
   static String conversation(String userId) =>

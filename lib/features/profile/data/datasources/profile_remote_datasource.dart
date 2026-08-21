@@ -16,11 +16,22 @@ class ProfileRemoteDataSource {
     return ProfileModel.fromJson(json['data'] as Map<String, dynamic>);
   }
 
-  Future<ProfileModel> updateProfile(
-      {required String userName, String? bio}) async {
+  Future<ProfileModel> updateProfile({
+    required String firstName,
+    required String lastName,
+    String? bio,
+    String? gender,
+    DateTime? dateOfBirth,
+  }) async {
     final json = await _client.put(
       ApiConstants.updateProfile,
-      body: {'userName': userName, if (bio != null) 'bio': bio},
+      body: {
+        'firstName': firstName,
+        'lastName': lastName,
+        'bio': bio,
+        'gender': gender,
+        if (dateOfBirth != null) 'dateOfBirth': dateOfBirth.toIso8601String(),
+      },
     );
     return ProfileModel.fromJson(json['data'] as Map<String, dynamic>);
   }
@@ -32,8 +43,6 @@ class ProfileRemoteDataSource {
       filePath: filePath,
     );
     final data = json['data'] as Map<String, dynamic>?;
-    return data?['profilePictureUrl']?.toString() ??
-        data?['avatarUrl']?.toString() ??
-        '';
+    return data?['profilePicture']?.toString() ?? '';
   }
 }

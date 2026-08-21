@@ -10,14 +10,13 @@ class GroupDetailModel extends GroupDetailEntity {
     required super.messages,
   });
 
-  // ⚠️ Verify these keys against the actual /api/groups/{groupId} response.
   factory GroupDetailModel.fromJson(Map<String, dynamic> json) {
-    final id = (json['groupId'] ?? json['id'] ?? '').toString();
+    final id = (json['groupId'] ?? '').toString();
     final membersJson = json['members'] as List? ?? [];
     final messagesJson = json['messages'] as List? ?? [];
     return GroupDetailModel(
       id: id,
-      name: json['name']?.toString() ?? '',
+      name: json['groupName']?.toString() ?? '',
       members: membersJson
           .map((e) => AppUserModel.fromJson(e as Map<String, dynamic>))
           .toList(),

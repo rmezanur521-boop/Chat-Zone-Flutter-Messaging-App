@@ -13,7 +13,8 @@ class ConversationPreviewsNotifier
   Future<void> load() async {
     state = const AsyncValue.loading();
     try {
-      final previews = await _ref.read(messagesRepositoryProvider).getPreviews();
+      final previews =
+          await _ref.read(messagesRepositoryProvider).getPreviews();
       state = AsyncValue.data(previews);
     } on Failure catch (f, st) {
       state = AsyncValue.error(f.message, st);
@@ -21,7 +22,8 @@ class ConversationPreviewsNotifier
   }
 }
 
-final conversationPreviewsProvider = StateNotifierProvider
-    ConversationPreviewsNotifier, AsyncValue<List<ConversationPreviewEntity>>>((ref) {
+final conversationPreviewsProvider = StateNotifierProvider<
+    ConversationPreviewsNotifier,
+    AsyncValue<List<ConversationPreviewEntity>>>((ref) {
   return ConversationPreviewsNotifier(ref);
 });

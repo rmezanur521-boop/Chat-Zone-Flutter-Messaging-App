@@ -44,7 +44,7 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
       context.go(AppRoutes.home);
     } else {
       final error = ref.read(authNotifierProvider).errorMessage;
-      AppSnackBar.error(context, 'Registration failed');
+      AppSnackBar.error(context, error ?? 'Registration failed');
     }
   }
 

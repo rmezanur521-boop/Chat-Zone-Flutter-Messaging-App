@@ -27,6 +27,6 @@ class ConversationPreviewEntity extends Equatable {
         lastMessage,
         lastMessageTime,
         unreadCount,
-        isOnline
+        isOnline,
       ];
 }

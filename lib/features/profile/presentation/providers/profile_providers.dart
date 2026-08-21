@@ -31,11 +31,21 @@ class MyProfileNotifier extends StateNotifier<AsyncValue<ProfileEntity>> {
     }
   }
 
-  Future<bool> update({required String userName, String? bio}) async {
+  Future<bool> update({
+    required String firstName,
+    required String lastName,
+    String? bio,
+    String? gender,
+    DateTime? dateOfBirth,
+  }) async {
     try {
-      final profile = await _ref
-          .read(profileRepositoryProvider)
-          .updateProfile(userName: userName, bio: bio);
+      final profile = await _ref.read(profileRepositoryProvider).updateProfile(
+            firstName: firstName,
+            lastName: lastName,
+            bio: bio,
+            gender: gender,
+            dateOfBirth: dateOfBirth,
+          );
       state = AsyncValue.data(profile);
       return true;
     } on Failure catch (f) {
@@ -60,7 +70,6 @@ final myProfileProvider =
   return MyProfileNotifier(ref);
 });
 
-// Read-only profile for viewing other users (e.g. tapping a friend/member).
 final otherProfileProvider =
     FutureProvider.family<ProfileEntity, String>((ref, userId) async {
   return ref.read(profileRepositoryProvider).getUserProfile(userId);

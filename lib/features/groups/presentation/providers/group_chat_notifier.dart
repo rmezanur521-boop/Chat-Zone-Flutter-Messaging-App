@@ -20,16 +20,23 @@ class GroupChatNotifier extends StateNotifier<GroupChatState> {
         _socket = socket,
         super(const GroupChatState()) {
     _listenIncoming();
+    _joinGroup();
     loadDetail();
   }
 
+  Future<void> _joinGroup() async {
+    final id = int.tryParse(groupId);
+    if (id == null) return;
+    await _socket.invoke('JoinGroup', args: [id]);
+  }
+
   void _listenIncoming() {
-    // ⚠️ Verify event name 'ReceiveGroupMessage' against the actual hub.
     _socket.on('ReceiveGroupMessage', (args) {
       if (args == null || args.isEmpty) return;
       final data = args[0] as Map<String, dynamic>;
       final message = GroupMessageModel.fromJson(data, groupId: groupId);
-      if (message.groupId == groupId) {
+      final alreadyPresent = state.messages.any((m) => m.id == message.id);
+      if (!alreadyPresent) {
         state = state.copyWith(messages: [...state.messages, message]);
       }
     });
@@ -57,8 +64,12 @@ class GroupChatNotifier extends StateNotifier<GroupChatState> {
     try {
       final message =
           await _repository.sendMessage(groupId: groupId, content: trimmed);
-      state = state
-          .copyWith(isSending: false, messages: [...state.messages, message]);
+      final alreadyPresent = state.messages.any((m) => m.id == message.id);
+      state = state.copyWith(
+        isSending: false,
+        messages:
+            alreadyPresent ? state.messages : [...state.messages, message],
+      );
     } on Failure catch (f) {
       state = state.copyWith(isSending: false, errorMessage: f.message);
     }

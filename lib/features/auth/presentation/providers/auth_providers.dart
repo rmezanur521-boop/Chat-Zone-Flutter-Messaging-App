@@ -6,6 +6,8 @@ import '../../domain/repositories/auth_repository.dart';
 import 'auth_notifier.dart';
 import 'auth_state.dart';
 
+export 'auth_state.dart';
+
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
   return AuthRemoteDataSource(ref.watch(apiClientProvider));
 });

@@ -80,7 +80,7 @@ class _MyProfilePageState extends ConsumerState<MyProfilePage> {
           padding: const EdgeInsets.symmetric(vertical: 24),
           children: [
             ProfileHeader(
-              name: profile.userName,
+              name: profile.fullName,
               email: profile.email,
               bio: profile.bio,
               avatarUrl: profile.avatarUrl,

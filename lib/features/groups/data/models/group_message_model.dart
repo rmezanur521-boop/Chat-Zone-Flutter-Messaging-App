@@ -9,24 +9,24 @@ class GroupMessageModel extends GroupMessageEntity {
     super.senderAvatar,
     required super.content,
     required super.sentAt,
-    super.isEdited,
+    super.editedAt,
+    super.isDeleted,
   });
 
-  // ⚠️ Verify these keys against the actual backend JSON.
   factory GroupMessageModel.fromJson(Map<String, dynamic> json,
-      {String? groupId}) {
+      {required String groupId}) {
     return GroupMessageModel(
-      id: (json['id'] ?? json['messageId'] ?? '').toString(),
-      groupId: (json['groupId'] ?? groupId ?? '').toString(),
+      id: (json['id'] ?? '').toString(),
+      groupId: groupId,
       senderId: (json['senderId'] ?? '').toString(),
       senderName: json['senderName']?.toString() ?? '',
-      senderAvatar: json['senderAvatarUrl']?.toString(),
       content: json['content']?.toString() ?? '',
-      sentAt: DateTime.tryParse(json['sentAt']?.toString() ??
-              json['createdAt']?.toString() ??
-              '') ??
-          DateTime.now(),
-      isEdited: json['isEdited'] == true,
+      sentAt:
+          DateTime.tryParse(json['sentAt']?.toString() ?? '') ?? DateTime.now(),
+      editedAt: json['editedAt'] != null
+          ? DateTime.tryParse(json['editedAt'].toString())
+          : null,
+      isDeleted: json['isDeleted'] == true,
     );
   }
 }

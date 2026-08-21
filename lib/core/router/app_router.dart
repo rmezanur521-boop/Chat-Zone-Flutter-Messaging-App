@@ -4,10 +4,9 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
-import '../../features/auth/presentation/providers/auth_state.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/messages/presentation/pages/chat_page.dart';
-import '../../features/profile/presentation/pages/other_profile_page.dart';
+import '../../features/profile/presentation/pages/other_user_profile_page.dart';
 
 class AppRoutes {
   AppRoutes._();

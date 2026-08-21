@@ -9,14 +9,12 @@ class AppUserModel extends AppUserEntity {
     super.isOnline,
   });
 
-  // ⚠️ Verify these keys against the actual backend JSON.
   factory AppUserModel.fromJson(Map<String, dynamic> json) {
     return AppUserModel(
-      id: (json['userId'] ?? json['id'] ?? '').toString(),
-      userName: json['userName']?.toString() ?? '',
+      id: (json['id'] ?? json['userId'] ?? '').toString(),
+      userName: json['fullName']?.toString() ?? '',
       email: json['email']?.toString(),
-      avatarUrl: json['profilePictureUrl']?.toString() ??
-          json['avatarUrl']?.toString(),
+      avatarUrl: json['profilePicture']?.toString(),
       isOnline: json['isOnline'] == true,
     );
   }

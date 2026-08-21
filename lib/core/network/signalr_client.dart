@@ -1,8 +1,5 @@
 import 'package:signalr_netcore/signalr_client.dart';
 
-/// Generic wrapper around signalr_netcore's HubConnection.
-/// Feature-specific socket datasources (e.g. MessagesSocketDataSource)
-/// build on top of this instead of talking to signalr_netcore directly.
 class SignalRClient {
   HubConnection? _connection;
 
@@ -26,6 +23,16 @@ class SignalRClient {
 
   void off(String eventName) {
     _connection?.off(eventName);
+  }
+
+  Future<Object?> invoke(String methodName, {List<Object>? args}) async {
+    if (!isConnected) return null;
+    return _connection!.invoke(methodName, args: args ?? []);
+  }
+
+  Future<void> send(String methodName, {List<Object>? args}) async {
+    if (!isConnected) return;
+    await _connection!.send(methodName, args: args ?? []);
   }
 
   Future<void> disconnect() async {

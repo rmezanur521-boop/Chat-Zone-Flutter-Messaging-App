@@ -8,12 +8,14 @@ class FriendRequestModel extends FriendRequestEntity {
     required super.sentAt,
   });
 
-  // ⚠️ Verify these keys against the actual /api/friends/requests response.
   factory FriendRequestModel.fromJson(Map<String, dynamic> json) {
     return FriendRequestModel(
-      requestId: (json['requestId'] ?? json['id'] ?? '').toString(),
-      fromUser: AppUserModel.fromJson(
-          (json['fromUser'] ?? json['sender'] ?? json) as Map<String, dynamic>),
+      requestId: (json['id'] ?? '').toString(),
+      fromUser: AppUserModel(
+        id: (json['senderId'] ?? '').toString(),
+        userName: json['senderName']?.toString() ?? '',
+        avatarUrl: json['senderProfilePicture']?.toString(),
+      ),
       sentAt:
           DateTime.tryParse(json['sentAt']?.toString() ?? '') ?? DateTime.now(),
     );
