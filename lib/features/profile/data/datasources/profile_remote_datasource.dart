@@ -36,11 +36,12 @@ class ProfileRemoteDataSource {
     return ProfileModel.fromJson(json['data'] as Map<String, dynamic>);
   }
 
-  Future<String> uploadProfilePicture(String filePath) async {
+  Future<String> uploadProfilePicture(List<int> bytes, String fileName) async {
     final json = await _client.uploadFile(
       ApiConstants.uploadProfilePicture,
       fieldName: 'file',
-      filePath: filePath,
+      bytes: bytes,
+      fileName: fileName,
     );
     final data = json['data'] as Map<String, dynamic>?;
     return data?['profilePicture']?.toString() ?? '';

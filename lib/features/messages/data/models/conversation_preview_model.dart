@@ -13,10 +13,9 @@ class ConversationPreviewModel extends ConversationPreviewEntity {
 
   factory ConversationPreviewModel.fromJson(Map<String, dynamic> json) {
     return ConversationPreviewModel(
-      userId: (json['userId'] ?? json['id'] ?? '').toString(),
-      userName: json['userName']?.toString() ?? '',
-      avatarUrl: json['profilePictureUrl']?.toString() ??
-          json['avatarUrl']?.toString(),
+      userId: (json['friendId'] ?? '').toString(),
+      userName: json['friendName']?.toString() ?? '',
+      avatarUrl: json['friendProfilePicture']?.toString(),
       lastMessage: json['lastMessage']?.toString() ?? '',
       lastMessageTime:
           DateTime.tryParse(json['lastMessageTime']?.toString() ?? '') ??

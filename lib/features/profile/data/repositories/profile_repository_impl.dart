@@ -47,9 +47,9 @@ class ProfileRepositoryImpl implements ProfileRepository {
   }
 
   @override
-  Future<String> uploadProfilePicture(String filePath) async {
+  Future<String> uploadProfilePicture(List<int> bytes, String fileName) async {
     try {
-      return await _remote.uploadProfilePicture(filePath);
+      return await _remote.uploadProfilePicture(bytes, fileName);
     } catch (e) {
       throw mapExceptionToFailure(e);
     }

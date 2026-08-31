@@ -41,7 +41,7 @@ class MessagesRemoteDataSource {
   }) async {
     final json = await _client.put(
       ApiConstants.editMessage(messageId),
-      body: {'content': content},
+      body: {'newContent': content},
     );
     return MessageModel.fromJson(json['data'] as Map<String, dynamic>);
   }

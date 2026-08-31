@@ -17,10 +17,15 @@ class AuthRemoteDataSource {
   }
 
   Future<AuthResponseModel> register(
-      String userName, String email, String password) async {
+      String firstName, String lastName, String email, String password) async {
     final json = await _client.post(
       ApiConstants.register,
-      body: {'userName': userName, 'email': email, 'password': password},
+      body: {
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'password': password,
+      },
       withAuth: false,
     );
     return AuthResponseModel.fromJson(json['data'] as Map<String, dynamic>);

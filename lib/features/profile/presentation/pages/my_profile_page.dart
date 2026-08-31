@@ -29,8 +29,10 @@ class _MyProfilePageState extends ConsumerState<MyProfilePage> {
         await picker.pickImage(source: ImageSource.gallery, imageQuality: 80);
     if (picked == null) return;
     setState(() => _isUploading = true);
-    final success =
-        await ref.read(myProfileProvider.notifier).uploadPicture(picked.path);
+    final bytes = await picked.readAsBytes();
+    final success = await ref
+        .read(myProfileProvider.notifier)
+        .uploadPicture(bytes, picked.name);
     if (!mounted) return;
     setState(() => _isUploading = false);
     if (!success) {

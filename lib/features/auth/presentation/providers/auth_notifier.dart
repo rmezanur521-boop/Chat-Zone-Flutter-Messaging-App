@@ -11,7 +11,11 @@ class AuthNotifier extends StateNotifier<AuthState> {
     state = state.copyWith(status: AuthStatus.loading);
     try {
       final user = await _repository.getCurrentUser();
-      state = state.copyWith(status: AuthStatus.authenticated, user: user);
+      if (user != null) {
+        state = state.copyWith(status: AuthStatus.authenticated, user: user);
+      } else {
+        state = state.copyWith(status: AuthStatus.unauthenticated);
+      }
     } catch (_) {
       state = state.copyWith(status: AuthStatus.unauthenticated);
     }
@@ -30,10 +34,12 @@ class AuthNotifier extends StateNotifier<AuthState> {
     }
   }
 
-  Future<bool> register(String userName, String email, String password) async {
+  Future<bool> register(
+      String firstName, String lastName, String email, String password) async {
     state = state.copyWith(status: AuthStatus.loading, errorMessage: null);
     try {
-      final user = await _repository.register(userName, email, password);
+      final user =
+          await _repository.register(firstName, lastName, email, password);
       state = state.copyWith(status: AuthStatus.authenticated, user: user);
       return true;
     } on Failure catch (f) {

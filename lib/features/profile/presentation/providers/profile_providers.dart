@@ -54,9 +54,11 @@ class MyProfileNotifier extends StateNotifier<AsyncValue<ProfileEntity>> {
     }
   }
 
-  Future<bool> uploadPicture(String filePath) async {
+  Future<bool> uploadPicture(List<int> bytes, String fileName) async {
     try {
-      await _ref.read(profileRepositoryProvider).uploadProfilePicture(filePath);
+      await _ref
+          .read(profileRepositoryProvider)
+          .uploadProfilePicture(bytes, fileName);
       await load();
       return true;
     } on Failure {

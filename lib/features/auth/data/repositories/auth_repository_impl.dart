@@ -29,9 +29,10 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<UserEntity> register(
-      String userName, String email, String password) async {
+      String firstName, String lastName, String email, String password) async {
     try {
-      final response = await _remote.register(userName, email, password);
+      final response =
+          await _remote.register(firstName, lastName, email, password);
       await _secureStorage.saveSession(
         token: response.token,
         refreshToken: response.refreshToken,

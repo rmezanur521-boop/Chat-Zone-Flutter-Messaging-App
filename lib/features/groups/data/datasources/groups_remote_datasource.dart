@@ -48,7 +48,7 @@ class GroupsRemoteDataSource {
   }) async {
     final json = await _client.put(
       ApiConstants.editGroupMessage(groupId, messageId),
-      body: {'content': content},
+      body: {'newContent': content},
     );
     return GroupMessageModel.fromJson(json['data'] as Map<String, dynamic>,
         groupId: groupId);

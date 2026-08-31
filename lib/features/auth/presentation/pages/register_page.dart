@@ -19,23 +19,28 @@ class RegisterPage extends ConsumerStatefulWidget {
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-  final _userNameController = TextEditingController();
+  final _firstNameController = TextEditingController();
+  final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _obscure = true;
 
   @override
   void dispose() {
-    _userNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     final success = await ref.read(authNotifierProvider.notifier).register(
-          _userNameController.text.trim(),
+          _firstNameController.text.trim(),
+          _lastNameController.text.trim(),
           _emailController.text.trim(),
           _passwordController.text,
         );
@@ -53,7 +58,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final isLoading = ref.watch(authNotifierProvider).isLoading;
 
     return Scaffold(
-      appBar: AppBar(leading: const BackButton()),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => context.go(AppRoutes.login),
+        ),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -75,11 +85,17 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                       .bodyMedium
                       ?.copyWith(color: AppColors.slate),
                 ),
-                const SizedBox(height: 28),
                 AppTextField(
-                  controller: _userNameController,
-                  label: 'Username',
-                  validator: Validators.username,
+                  controller: _firstNameController,
+                  label: 'First Name',
+                  validator: Validators.required,
+                  prefixIcon: const Icon(Icons.person_outline),
+                ),
+                const SizedBox(height: 16),
+                AppTextField(
+                  controller: _lastNameController,
+                  label: 'Last Name',
+                  validator: Validators.required,
                   prefixIcon: const Icon(Icons.person_outline),
                 ),
                 const SizedBox(height: 16),
@@ -104,13 +120,27 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     onPressed: () => setState(() => _obscure = !_obscure),
                   ),
                 ),
+                const SizedBox(height: 16),
+                AppTextField(
+                  controller: _confirmPasswordController,
+                  label: 'Confirm Password',
+                  obscureText: _obscure,
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return 'Please confirm your password';
+                    if (value != _passwordController.text)
+                      return 'Passwords do not match';
+                    return null;
+                  },
+                  prefixIcon: const Icon(Icons.lock_outline),
+                ),
                 const SizedBox(height: 28),
                 AppButton(
                     label: 'Sign Up', isLoading: isLoading, onPressed: _submit),
                 const SizedBox(height: 20),
                 Center(
                   child: TextButton(
-                    onPressed: () => context.pop(),
+                    onPressed: () => context.go(AppRoutes.login),
                     child: const Text('Already have an account? Log in'),
                   ),
                 ),

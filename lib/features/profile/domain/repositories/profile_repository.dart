@@ -10,5 +10,5 @@ abstract class ProfileRepository {
     String? gender,
     DateTime? dateOfBirth,
   });
-  Future<String> uploadProfilePicture(String filePath);
+  Future<String> uploadProfilePicture(List<int> bytes, String fileName);
 }
