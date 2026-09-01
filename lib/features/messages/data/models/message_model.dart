@@ -8,9 +8,9 @@ class MessageModel extends MessageEntity {
     required super.content,
     required super.sentAt,
     super.editedAt,
+    super.deletedAt,
     super.isDeleted,
   });
-
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
       id: (json['id'] ?? '').toString(),
@@ -21,6 +21,9 @@ class MessageModel extends MessageEntity {
           DateTime.tryParse(json['sentAt']?.toString() ?? '') ?? DateTime.now(),
       editedAt: json['editedAt'] != null
           ? DateTime.tryParse(json['editedAt'].toString())
+          : null,
+      deletedAt: json['deletedAt'] != null
+          ? DateTime.tryParse(json['deletedAt'].toString())
           : null,
       isDeleted: json['isDeleted'] == true,
     );

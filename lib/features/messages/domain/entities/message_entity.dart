@@ -7,6 +7,7 @@ class MessageEntity extends Equatable {
   final String content;
   final DateTime sentAt;
   final DateTime? editedAt;
+  final DateTime? deletedAt;
   final bool isDeleted;
   final bool isEdited;
 
@@ -17,10 +18,37 @@ class MessageEntity extends Equatable {
     required this.content,
     required this.sentAt,
     this.editedAt,
+    this.deletedAt,
     this.isDeleted = false,
   }) : isEdited = editedAt != null;
 
+  MessageEntity copyWith({
+    String? content,
+    DateTime? editedAt,
+    DateTime? deletedAt,
+    bool? isDeleted,
+  }) {
+    return MessageEntity(
+      id: id,
+      senderId: senderId,
+      senderName: senderName,
+      content: content ?? this.content,
+      sentAt: sentAt,
+      editedAt: editedAt ?? this.editedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      isDeleted: isDeleted ?? this.isDeleted,
+    );
+  }
+
   @override
-  List<Object?> get props =>
-      [id, senderId, senderName, content, sentAt, editedAt, isDeleted];
+  List<Object?> get props => [
+        id,
+        senderId,
+        senderName,
+        content,
+        sentAt,
+        editedAt,
+        deletedAt,
+        isDeleted
+      ];
 }

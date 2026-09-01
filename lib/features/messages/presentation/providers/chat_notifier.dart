@@ -58,6 +58,40 @@ class ChatNotifier extends StateNotifier<ChatState> {
     }
   }
 
+  Future<void> editMessage(String messageId, String newContent) async {
+    final trimmed = newContent.trim();
+    if (trimmed.isEmpty) return;
+    state = state.copyWith(isSending: true, errorMessage: null);
+    try {
+      final updated =
+          await _repository.editMessage(messageId: messageId, content: trimmed);
+      state = state.copyWith(
+        isSending: false,
+        messages: [
+          for (final m in state.messages) m.id == messageId ? updated : m,
+        ],
+      );
+    } on Failure catch (f) {
+      state = state.copyWith(isSending: false, errorMessage: f.message);
+    }
+  }
+
+  Future<void> deleteMessage(String messageId) async {
+    try {
+      await _repository.deleteMessage(messageId);
+      state = state.copyWith(
+        messages: [
+          for (final m in state.messages)
+            m.id == messageId
+                ? m.copyWith(isDeleted: true, deletedAt: DateTime.now())
+                : m,
+        ],
+      );
+    } on Failure catch (f) {
+      state = state.copyWith(errorMessage: f.message);
+    }
+  }
+
   @override
   void dispose() {
     _subscription?.cancel();

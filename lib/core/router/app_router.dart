@@ -5,6 +5,7 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
+import '../../features/friends/presentation/pages/friend_details_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/messages/presentation/pages/chat_page.dart';
 import '../../features/profile/presentation/pages/other_user_profile_page.dart';
@@ -17,6 +18,7 @@ class AppRoutes {
   static const home = '/home';
   static const chat = '/chat';
   static const otherProfile = '/user';
+  static const friendDetails = '/friend';
 }
 
 class _RouterRefreshNotifier extends ChangeNotifier {
@@ -51,16 +53,21 @@ final routerProvider = Provider<GoRouter>((ref) {
     },
     routes: [
       GoRoute(
-          path: AppRoutes.splash,
-          builder: (context, state) => const SplashPage()),
+        path: AppRoutes.splash,
+        builder: (context, state) => const SplashPage(),
+      ),
       GoRoute(
-          path: AppRoutes.login,
-          builder: (context, state) => const LoginPage()),
+        path: AppRoutes.login,
+        builder: (context, state) => const LoginPage(),
+      ),
       GoRoute(
-          path: AppRoutes.register,
-          builder: (context, state) => const RegisterPage()),
+        path: AppRoutes.register,
+        builder: (context, state) => const RegisterPage(),
+      ),
       GoRoute(
-          path: AppRoutes.home, builder: (context, state) => const HomePage()),
+        path: AppRoutes.home,
+        builder: (context, state) => const HomePage(),
+      ),
       GoRoute(
         path: '${AppRoutes.chat}/:userId',
         builder: (context, state) {
@@ -78,6 +85,18 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (context, state) {
           final userId = state.pathParameters['userId']!;
           return OtherProfilePage(userId: userId);
+        },
+      ),
+      GoRoute(
+        path: '${AppRoutes.friendDetails}/:userId',
+        builder: (context, state) {
+          final userId = state.pathParameters['userId']!;
+          final extra = state.extra as Map<String, dynamic>?;
+          final isFriend = extra?['isFriend'] as bool? ?? false;
+          return FriendDetailsPage(
+            userId: userId,
+            isFriend: isFriend,
+          );
         },
       ),
     ],

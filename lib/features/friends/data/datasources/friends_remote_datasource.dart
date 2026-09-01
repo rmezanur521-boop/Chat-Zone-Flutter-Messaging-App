@@ -2,6 +2,7 @@ import '../../../../core/constants/api_constants.dart';
 import '../../../../core/network/dio_client.dart';
 import '../models/app_user_model.dart';
 import '../models/friend_request_model.dart';
+import '../models/outgoing_friend_request_model.dart';
 
 class FriendsRemoteDataSource {
   final ApiClient _client;
@@ -29,6 +30,30 @@ class FriendsRemoteDataSource {
     return list
         .map((e) => AppUserModel.fromJson(e as Map<String, dynamic>))
         .toList();
+  }
+
+  Future<AppUserModel> getUserProfile(String userId) async {
+    final json = await _client.get(ApiConstants.userProfile(userId));
+    return AppUserModel.fromJson(json['data'] as Map<String, dynamic>);
+  }
+
+  Future<List<AppUserModel>> getSuggestedFriends() async {
+    final json = await _client.get('${ApiConstants.friends}/suggested');
+    final list = json['data'] as List? ?? [];
+    return list
+        .map((e) => AppUserModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  Future<OutgoingFriendRequestModel?> checkRequestStatus(String userId) async {
+    try {
+      final json =
+          await _client.get('${ApiConstants.friends}/request-status/$userId');
+      return OutgoingFriendRequestModel.fromJson(
+          json['data'] as Map<String, dynamic>);
+    } catch (e) {
+      return null;
+    }
   }
 
   Future<void> sendRequest(String receiverId) async {

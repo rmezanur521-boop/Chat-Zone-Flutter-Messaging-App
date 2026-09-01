@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../../core/router/app_router.dart';
 import '../../../../core/widgets/app_empty_state.dart';
 import '../../../../core/widgets/app_loader.dart';
+import '../pages/user_search_page.dart';
 import '../providers/friends_providers.dart';
 import '../widgets/friend_request_tile.dart';
 import '../widgets/user_list_tile.dart';
-import 'user_search_page.dart';
 
 class FriendsPage extends ConsumerStatefulWidget {
   const FriendsPage({super.key});
@@ -52,8 +54,8 @@ class _FriendsPageState extends ConsumerState<FriendsPage>
           tabs: [
             const Tab(text: 'All Friends'),
             Tab(
-                text:
-                    pendingCount > 0 ? 'Requests ($pendingCount)' : 'Requests'),
+              text: pendingCount > 0 ? 'Requests ($pendingCount)' : 'Requests',
+            ),
           ],
         ),
       ),
@@ -89,10 +91,16 @@ class _FriendsPageState extends ConsumerState<FriendsPage>
                   itemCount: friends.length,
                   itemBuilder: (context, i) => UserListTile(
                     user: friends[i],
+                    onTap: () {
+                      context.push(
+                        '${AppRoutes.friendDetails}/${friends[i].id}',
+                        extra: {'isFriend': true},
+                      );
+                    },
                     trailing: IconButton(
                       icon: const Icon(Icons.person_remove_outlined),
                       onPressed: () =>
-                          _confirmRemove(friends[i].id, friends[i].userName),
+                          _confirmRemove(friends[i].id, friends[i].fullName),
                     ),
                   ),
                 );
@@ -150,7 +158,9 @@ class _FriendsPageState extends ConsumerState<FriendsPage>
         content: Text('Remove $name from your friends?'),
         actions: [
           TextButton(
-              onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
