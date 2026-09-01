@@ -52,6 +52,8 @@ class ApiConstants {
       '$apiUrl/groups/$groupId/members/add/$userId';
   static String removeGroupMember(String groupId, String userId) =>
       '$apiUrl/groups/$groupId/members/remove/$userId';
+  static String leaveGroup(String groupId) => '$apiUrl/groups/$groupId/leave';
+  static String deleteGroup(String groupId) => '$apiUrl/groups/$groupId';
 
   // Profile
   static const String myProfile = '$apiUrl/profile';

@@ -1,5 +1,4 @@
 import '../../../../core/error/failures.dart';
-import '../../../friends/domain/entities/app_user_entity.dart';
 import '../../domain/entities/group_detail_entity.dart';
 import '../../domain/entities/group_message_entity.dart';
 import '../../domain/entities/group_preview_entity.dart';
@@ -92,7 +91,25 @@ class GroupsRepositoryImpl implements GroupsRepository {
     }
   }
 
-  // Unused import guard (AppUserEntity referenced via GroupDetailEntity)
-  // ignore: unused_element
-  void _touch(AppUserEntity _) {}
+  @override
+  Future<GroupLeaveResultEntity> leaveGroup({required String groupId}) async {
+    try {
+      final data = await _remote.leaveGroup(groupId: groupId);
+      return GroupLeaveResultEntity(
+        groupDeleted: data['groupDeleted'] == true,
+        newAdminId: data['newAdminId']?.toString(),
+      );
+    } catch (e) {
+      throw mapExceptionToFailure(e);
+    }
+  }
+
+  @override
+  Future<void> deleteGroup({required String groupId}) async {
+    try {
+      await _remote.deleteGroup(groupId: groupId);
+    } catch (e) {
+      throw mapExceptionToFailure(e);
+    }
+  }
 }

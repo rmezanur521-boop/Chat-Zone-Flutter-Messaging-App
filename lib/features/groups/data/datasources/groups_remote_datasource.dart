@@ -68,4 +68,13 @@ class GroupsRemoteDataSource {
       {required String groupId, required String userId}) async {
     await _client.delete(ApiConstants.removeGroupMember(groupId, userId));
   }
+
+  Future<Map<String, dynamic>> leaveGroup({required String groupId}) async {
+    final json = await _client.post(ApiConstants.leaveGroup(groupId));
+    return json['data'] as Map<String, dynamic>? ?? {};
+  }
+
+  Future<void> deleteGroup({required String groupId}) async {
+    await _client.delete(ApiConstants.deleteGroup(groupId));
+  }
 }

@@ -2,6 +2,16 @@ import '../entities/group_detail_entity.dart';
 import '../entities/group_message_entity.dart';
 import '../entities/group_preview_entity.dart';
 
+class GroupLeaveResultEntity {
+  final bool groupDeleted;
+  final String? newAdminId;
+
+  const GroupLeaveResultEntity({
+    this.groupDeleted = false,
+    this.newAdminId,
+  });
+}
+
 abstract class GroupsRepository {
   Future<List<GroupPreviewEntity>> getPreviews();
   Future<GroupDetailEntity> getGroupDetail(String groupId);
@@ -17,4 +27,6 @@ abstract class GroupsRepository {
       {required String groupId, required String messageId});
   Future<void> addMember({required String groupId, required String userId});
   Future<void> removeMember({required String groupId, required String userId});
+  Future<GroupLeaveResultEntity> leaveGroup({required String groupId});
+  Future<void> deleteGroup({required String groupId});
 }

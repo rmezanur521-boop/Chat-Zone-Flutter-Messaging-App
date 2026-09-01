@@ -24,6 +24,24 @@ class GroupMessageEntity extends Equatable {
     this.isDeleted = false,
   }) : isEdited = editedAt != null;
 
+  GroupMessageEntity copyWith({
+    String? content,
+    DateTime? editedAt,
+    bool? isDeleted,
+  }) {
+    return GroupMessageEntity(
+      id: id,
+      groupId: groupId,
+      senderId: senderId,
+      senderName: senderName,
+      senderAvatar: senderAvatar,
+      content: content ?? this.content,
+      sentAt: sentAt,
+      editedAt: editedAt ?? this.editedAt,
+      isDeleted: isDeleted ?? this.isDeleted,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,
