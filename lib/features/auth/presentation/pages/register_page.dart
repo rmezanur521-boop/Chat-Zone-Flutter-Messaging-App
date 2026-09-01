@@ -72,19 +72,51 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Create account',
+                const SizedBox(height: 24),
+                Center(
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(22),
+                        child: Image.asset(
+                          'assets/icons/logo.jpeg',
+                          width: 96,
+                          height: 96,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Chat Zone',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primaryTeal,
+                                ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Text('Create account',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w800)),
+                ),
+                const SizedBox(height: 6),
+                Center(
+                  child: Text(
+                    'Join Chat Zone and start chatting.',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w800)),
-                const SizedBox(height: 6),
-                Text(
-                  'Join Chat Zone and start chatting.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: AppColors.slate),
+                        .bodyMedium
+                        ?.copyWith(color: AppColors.slate),
+                  ),
                 ),
+                const SizedBox(height: 16),
                 AppTextField(
                   controller: _firstNameController,
                   label: 'First Name',
@@ -133,6 +165,12 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     return null;
                   },
                   prefixIcon: const Icon(Icons.lock_outline),
+                  suffixIcon: IconButton(
+                    icon: Icon(_obscure
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined),
+                    onPressed: () => setState(() => _obscure = !_obscure),
+                  ),
                 ),
                 const SizedBox(height: 28),
                 AppButton(

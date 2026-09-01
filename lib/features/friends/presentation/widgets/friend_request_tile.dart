@@ -18,6 +18,7 @@ class FriendRequestTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       leading: AppAvatar(
         imageUrl: request.fromUser.avatarUrl,
         name: request.fromUser.userName,

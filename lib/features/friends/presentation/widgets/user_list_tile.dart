@@ -18,6 +18,7 @@ class UserListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       leading: AppAvatar(
         imageUrl: user.avatarUrl,
         name: user.fullName,

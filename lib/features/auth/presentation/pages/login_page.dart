@@ -59,29 +59,48 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 24),
-                Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryTeal.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(18),
+                Center(
+                  child: Column(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(22),
+                        child: Image.asset(
+                          'assets/icons/logo.jpeg',
+                          width: 96,
+                          height: 96,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Chat Zone',
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.primaryTeal,
+                                ),
+                      ),
+                    ],
                   ),
-                  child: const Icon(Icons.chat_bubble_rounded,
-                      color: AppColors.primaryTeal, size: 32),
                 ),
                 const SizedBox(height: 24),
-                Text('Welcome back',
+                Center(
+                  child: Text('Welcome back',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(fontWeight: FontWeight.w800)),
+                ),
+                const SizedBox(height: 6),
+                Center(
+                  child: Text(
+                    'Log in to keep the conversation going.',
+                    textAlign: TextAlign.center,
                     style: Theme.of(context)
                         .textTheme
-                        .headlineSmall
-                        ?.copyWith(fontWeight: FontWeight.w800)),
-                const SizedBox(height: 6),
-                Text(
-                  'Log in to keep the conversation going.',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(color: AppColors.slate),
+                        .bodyMedium
+                        ?.copyWith(color: AppColors.slate),
+                  ),
                 ),
                 const SizedBox(height: 32),
                 AppTextField(

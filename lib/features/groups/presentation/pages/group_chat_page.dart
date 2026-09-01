@@ -85,7 +85,12 @@ class _GroupChatPageState extends ConsumerState<GroupChatPage> {
   }
 
   void _openProfile(String userId) {
-    context.push('${AppRoutes.otherProfile}/$userId');
+    final friends = ref.read(friendsListProvider).asData?.value ?? [];
+    final isFriend = friends.any((f) => f.id == userId);
+    context.push(
+      '${AppRoutes.friendDetails}/$userId',
+      extra: {'isFriend': isFriend},
+    );
   }
 
   void _showMembersSheet() {

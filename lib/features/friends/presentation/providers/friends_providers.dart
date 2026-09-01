@@ -162,6 +162,18 @@ class SuggestedFriendsNotifier
       state = AsyncValue.error(f.message, st);
     }
   }
+
+  Future<void> sendRequest(String userId) async {
+    try {
+      await _ref.read(friendsRepositoryProvider).sendRequest(userId);
+      final current = state.value ?? [];
+      state = AsyncValue.data(current
+          .map((u) => u.id == userId ? u.copyWith(isRequestSent: true) : u)
+          .toList());
+    } on Failure catch (f, st) {
+      state = AsyncValue.error(f.message, st);
+    }
+  }
 }
 
 final suggestedFriendsProvider = StateNotifierProvider<SuggestedFriendsNotifier,
@@ -198,6 +210,10 @@ class UserSearchNotifier
   Future<void> sendRequest(String userId) async {
     try {
       await _ref.read(friendsRepositoryProvider).sendRequest(userId);
+      final current = state.value ?? [];
+      state = AsyncValue.data(current
+          .map((u) => u.id == userId ? u.copyWith(isRequestSent: true) : u)
+          .toList());
     } on Failure catch (f, st) {
       state = AsyncValue.error(f.message, st);
     }

@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/app_router.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/app_empty_state.dart';
 import '../../../../core/widgets/app_loader.dart';
+import '../../domain/entities/app_user_entity.dart';
 import '../providers/friends_providers.dart';
 import '../widgets/user_list_tile.dart';
 
@@ -71,7 +73,27 @@ class _UserSearchPageState extends ConsumerState<UserSearchPage> {
     );
   }
 
-  Widget _buildSuggestionsView(AsyncValue<List<dynamic>> suggestionsState) {
+  Widget _buildActionButton(AppUserEntity user, void Function(String) onSend) {
+    if (user.isRequestSent) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(horizontal: 4),
+        child: Chip(
+          label: Text('Sent'),
+          visualDensity: VisualDensity.compact,
+          backgroundColor: AppColors.primaryTealLight,
+        ),
+      );
+    }
+    return TextButton.icon(
+      onPressed: () => onSend(user.id),
+      icon: const Icon(Icons.person_add_alt_1_rounded, size: 16),
+      label: const Text('Add'),
+      style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+    );
+  }
+
+  Widget _buildSuggestionsView(
+      AsyncValue<List<AppUserEntity>> suggestionsState) {
     return suggestionsState.when(
       loading: () => const AppLoader(),
       error: (e, _) => ListView(
@@ -103,6 +125,12 @@ class _UserSearchPageState extends ConsumerState<UserSearchPage> {
             final user = suggestions[index];
             return UserListTile(
               user: user,
+              trailing: _buildActionButton(
+                user,
+                (userId) => ref
+                    .read(suggestedFriendsProvider.notifier)
+                    .sendRequest(userId),
+              ),
               onTap: () {
                 context.push(
                   '${AppRoutes.friendDetails}/${user.id}',
@@ -115,7 +143,7 @@ class _UserSearchPageState extends ConsumerState<UserSearchPage> {
     );
   }
 
-  Widget _buildSearchResultsView(AsyncValue<List<dynamic>> searchState) {
+  Widget _buildSearchResultsView(AsyncValue<List<AppUserEntity>> searchState) {
     return searchState.when(
       loading: () => const AppLoader(),
       error: (e, _) => ListView(
@@ -147,6 +175,11 @@ class _UserSearchPageState extends ConsumerState<UserSearchPage> {
             final user = results[index];
             return UserListTile(
               user: user,
+              trailing: _buildActionButton(
+                user,
+                (userId) =>
+                    ref.read(userSearchProvider.notifier).sendRequest(userId),
+              ),
               onTap: () {
                 context.push(
                   '${AppRoutes.friendDetails}/${user.id}',

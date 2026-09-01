@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/date_formatter.dart';
+import '../../../../core/widgets/app_avatar.dart';
 import '../../domain/entities/group_preview_entity.dart';
 
 class GroupTile extends StatelessWidget {
@@ -14,14 +15,10 @@ class GroupTile extends StatelessWidget {
     return ListTile(
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      leading: CircleAvatar(
+      leading: AppAvatar(
+        imageUrl: group.avatarUrl,
+        name: group.name,
         radius: 26,
-        backgroundColor: AppColors.primaryTeal.withValues(alpha: 0.15),
-        backgroundImage:
-            group.avatarUrl != null ? NetworkImage(group.avatarUrl!) : null,
-        child: group.avatarUrl == null
-            ? const Icon(Icons.groups_rounded, color: AppColors.primaryTealDark)
-            : null,
       ),
       title:
           Text(group.name, style: const TextStyle(fontWeight: FontWeight.w700)),

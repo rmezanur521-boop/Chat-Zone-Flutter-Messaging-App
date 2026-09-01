@@ -21,6 +21,7 @@ class GroupMemberTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       leading: AppAvatar(
           imageUrl: member.avatarUrl, name: member.fullName, radius: 22),
       title: Text(member.fullName),

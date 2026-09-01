@@ -9,7 +9,7 @@ class OutgoingFriendRequestModel extends OutgoingFriendRequestEntity {
   factory OutgoingFriendRequestModel.fromJson(Map<String, dynamic> json) {
     return OutgoingFriendRequestModel(
       userId: (json['userId'] ?? '').toString(),
-      status: json['status']?.toString() ?? 'pending',
+      status: json['status']?.toString() ?? '',
     );
   }
 }

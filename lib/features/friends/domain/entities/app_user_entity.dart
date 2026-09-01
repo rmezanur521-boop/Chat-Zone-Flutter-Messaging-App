@@ -11,6 +11,8 @@ class AppUserEntity extends Equatable {
   final String? bio;
   final String? gender;
   final DateTime? dateOfBirth;
+  final bool isFriend;
+  final bool isRequestSent;
 
   const AppUserEntity({
     required this.id,
@@ -23,6 +25,8 @@ class AppUserEntity extends Equatable {
     this.bio,
     this.gender,
     this.dateOfBirth,
+    this.isFriend = false,
+    this.isRequestSent = false,
   });
 
   String get fullName {
@@ -30,6 +34,23 @@ class AppUserEntity extends Equatable {
       return userName;
     }
     return '${firstName ?? ''} ${lastName ?? ''}'.trim();
+  }
+
+  AppUserEntity copyWith({bool? isRequestSent}) {
+    return AppUserEntity(
+      id: id,
+      userName: userName,
+      email: email,
+      avatarUrl: avatarUrl,
+      isOnline: isOnline,
+      firstName: firstName,
+      lastName: lastName,
+      bio: bio,
+      gender: gender,
+      dateOfBirth: dateOfBirth,
+      isFriend: isFriend,
+      isRequestSent: isRequestSent ?? this.isRequestSent,
+    );
   }
 
   @override
@@ -44,5 +65,7 @@ class AppUserEntity extends Equatable {
         bio,
         gender,
         dateOfBirth,
+        isFriend,
+        isRequestSent,
       ];
 }

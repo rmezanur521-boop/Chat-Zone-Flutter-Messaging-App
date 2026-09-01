@@ -12,6 +12,8 @@ class AppUserModel extends AppUserEntity {
     super.bio,
     super.gender,
     super.dateOfBirth,
+    super.isFriend,
+    super.isRequestSent,
   });
 
   factory AppUserModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,8 @@ class AppUserModel extends AppUserEntity {
       dateOfBirth: json['dateOfBirth'] != null
           ? DateTime.tryParse(json['dateOfBirth'].toString())
           : null,
+      isFriend: json['isFriend'] == true,
+      isRequestSent: json['isRequestSent'] == true,
     );
   }
 }
