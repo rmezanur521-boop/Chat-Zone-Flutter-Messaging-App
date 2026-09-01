@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/theme_provider.dart';
 import '../../../../core/widgets/app_empty_state.dart';
 import '../../../../core/widgets/app_loader.dart';
 import '../../../auth/presentation/providers/auth_providers.dart';
@@ -65,7 +64,6 @@ class _MyProfilePageState extends ConsumerState<MyProfilePage> {
   @override
   Widget build(BuildContext context) {
     final profileState = ref.watch(myProfileProvider);
-    final themeMode = ref.watch(themeProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -98,13 +96,6 @@ class _MyProfilePageState extends ConsumerState<MyProfilePage> {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => const EditProfilePage()),
               ),
-            ),
-            SwitchListTile(
-              secondary: const Icon(Icons.dark_mode_outlined,
-                  color: AppColors.primaryTeal),
-              title: const Text('Dark mode'),
-              value: themeMode == ThemeMode.dark,
-              onChanged: (_) => ref.read(themeProvider.notifier).toggleTheme(),
             ),
             const Divider(height: 32),
             ListTile(
