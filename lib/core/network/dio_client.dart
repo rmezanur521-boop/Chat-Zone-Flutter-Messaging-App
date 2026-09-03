@@ -92,7 +92,7 @@ class ApiClient {
     return _withAuthRetry(
       () async => _client
           .get(Uri.parse(url), headers: await _headers(withAuth: withAuth))
-          .timeout(const Duration(seconds: 10)),
+          .timeout(const Duration(seconds: 30)),
       withAuth: withAuth,
     );
   }
