@@ -8,6 +8,7 @@ import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../providers/auth_providers.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   const LoginPage({super.key});
@@ -64,8 +65,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(22),
-                        child: Image.asset(
-                          'assets/icons/logo.jpeg',
+                        child: SvgPicture.asset(
+                          'assets/icons/logo.svg',
                           width: 96,
                           height: 96,
                           fit: BoxFit.cover,

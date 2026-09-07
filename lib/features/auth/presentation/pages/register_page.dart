@@ -9,6 +9,7 @@ import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_text_field.dart';
 import '../providers/auth_providers.dart';
 import 'auth_state_status_ext.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class RegisterPage extends ConsumerStatefulWidget {
   const RegisterPage({super.key});
@@ -78,8 +79,8 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(22),
-                        child: Image.asset(
-                          'assets/icons/logo.jpeg',
+                        child: SvgPicture.asset(
+                          'assets/icons/logo.svg',
                           width: 96,
                           height: 96,
                           fit: BoxFit.cover,

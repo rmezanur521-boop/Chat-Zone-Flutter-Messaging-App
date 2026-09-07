@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/app_colors.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -45,11 +46,14 @@ class _AboutPageState extends State<AboutPage> {
           Center(
             child: Column(
               children: [
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundColor: AppColors.primaryTeal,
-                  child: Icon(Icons.chat_bubble_rounded,
-                      size: 40, color: Colors.white),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(22),
+                  child: SvgPicture.asset(
+                    'assets/icons/logo.svg',
+                    width: 96,
+                    height: 96,
+                    fit: BoxFit.cover,
+                  ),
                 ),
                 const SizedBox(height: 12),
                 const Text(

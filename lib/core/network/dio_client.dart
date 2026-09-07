@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../error/exceptions.dart';
 import '../storage/secure_storage_service.dart';
+import 'dart:async';
+import 'dart:io';
 
 /// Central HTTP client. Every datasource in the app should call
 /// through this class instead of using http.* directly, so that
@@ -83,8 +85,12 @@ class ApiClient {
       }
       final retryResponse = await request();
       return await _handle(retryResponse);
-    } on http.ClientException {
+    } on TimeoutException {
+      throw NoInternetException('Server is waking up, please try again.');
+    } on SocketException {
       throw NoInternetException();
+    } on http.ClientException catch (e) {
+      throw NoInternetException('Connection failed: ${e.message}');
     }
   }
 
@@ -92,7 +98,7 @@ class ApiClient {
     return _withAuthRetry(
       () async => _client
           .get(Uri.parse(url), headers: await _headers(withAuth: withAuth))
-          .timeout(const Duration(seconds: 30)),
+          .timeout(const Duration(seconds: 45)),
       withAuth: withAuth,
     );
   }
@@ -103,11 +109,13 @@ class ApiClient {
     bool withAuth = true,
   }) {
     return _withAuthRetry(
-      () async => _client.post(
-        Uri.parse(url),
-        headers: await _headers(withAuth: withAuth),
-        body: body != null ? jsonEncode(body) : null,
-      ),
+      () async => _client
+          .post(
+            Uri.parse(url),
+            headers: await _headers(withAuth: withAuth),
+            body: body != null ? jsonEncode(body) : null,
+          )
+          .timeout(const Duration(seconds: 45)),
       withAuth: withAuth,
     );
   }
@@ -118,19 +126,22 @@ class ApiClient {
     bool withAuth = true,
   }) {
     return _withAuthRetry(
-      () async => _client.put(
-        Uri.parse(url),
-        headers: await _headers(withAuth: withAuth),
-        body: body != null ? jsonEncode(body) : null,
-      ),
+      () async => _client
+          .put(
+            Uri.parse(url),
+            headers: await _headers(withAuth: withAuth),
+            body: body != null ? jsonEncode(body) : null,
+          )
+          .timeout(const Duration(seconds: 45)),
       withAuth: withAuth,
     );
   }
 
   Future<Map<String, dynamic>> delete(String url, {bool withAuth = true}) {
     return _withAuthRetry(
-      () async => _client.delete(Uri.parse(url),
-          headers: await _headers(withAuth: withAuth)),
+      () async => _client
+          .delete(Uri.parse(url), headers: await _headers(withAuth: withAuth))
+          .timeout(const Duration(seconds: 45)),
       withAuth: withAuth,
     );
   }
